@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🚭 QuitNow Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Onboarding Styles */
+        .onboarding-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .onboarding-hidden {
+            transform: translateY(-100%);
+        }
+
+        .step-content {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-content.active {
+            display: flex;
+        }
+
+        /* Views Management */
+        .app-view {
+            display: none;
+        }
+
+        .app-view.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            height: calc(100vh - 140px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message-received {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .message-sent {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-sender {
+            font-size: 10px;
+            color: #94A3B8;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .chat-input-area {
+            padding: 12px;
+            background: white;
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 24px;
+            border: 1px solid #E2E8F0;
+            outline: none;
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ONBOARDING WIZARD (Novidade) -->
+    <div id="onboardingWizard" class="onboarding-screen">
+        <div style="margin-bottom: 20px;">
+            <div style="height: 4px; background: #eee; border-radius: 2px;">
+                <div id="progressBar"
+                    style="height: 100%; background: var(--primary); width: 20%; transition: width 0.3s;"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Intro -->
+        <div class="step-content active" data-step="1">
+            <div style="text-align: center;">
+                <span class="material-icons"
+                    style="font-size: 64px; color: var(--primary); margin-bottom: 24px;">psychology</span>
+                <h1 style="font-size: 24px; margin-bottom: 12px;">Olá! 👋</h1>
+                <p style="color: #64748B;">Vamos personalizar o app para você em 30 segundos.</p>
+            </div>
+            <button class="action-btn purple"
+                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
+                onclick="nextStep(2)">Começar</button>
+        </div>
+
+        <!-- Step 2: Consumo -->
+        <div class="step-content" data-step="2">
+            <h2>Hábito</h2>
+            <div style="margin-top: 32px;">
+                <label>Cigarros por dia?</label>
+                <h3 id="cigDisplay" style="color: var(--primary); font-size: 24px;">15</h3>
+                <input type="range" min="1" max="100" value="15" style="width: 100%; margin-top: 12px;"
+                    oninput="updateOnboardingData('cigs', this.value)">
+            </div>
+            <div style="margin-top: 32px;">
+                <label>Anos fumando?</label>
+                <h3 id="yearsDisplay" style="color: var(--primary); font-size: 24px;">5</h3>
+                <input type="range" min="0" max="50" value="5" style="width: 100%; margin-top: 12px;"
+                    oninput="updateOnboardingData('years', this.value)">
+            </div>
+            <button class="action-btn purple"
+                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
+                onclick="nextStep(3)">Próximo</button>
+        </div>
+
+        <!-- Step 3: Financeiro -->
+        <div class="step-content" data-step="3">
+            <h2>Financeiro</h2>
+            <p style="color: #64748B;">Preço do maço?</p>
+            <div style="text-align: center; margin: 40px 0;">
+                <h1 id="priceDisplay" style="font-size: 48px; color: var(--success);">R$ 10,00</h1>
+                <p style="font-size: 12px; color: #94A3B8; margin-top: 8px;">Gasto mensal est: <strong
+                        id="monthlySpendDisplay">R$ 450,00</strong></p>
+            </div>
+            <input type="range" min="3" max="50" step="0.5" value="10"
+                style="width: 100%; accent-color: var(--success);" oninput="updateOnboardingData('price', this.value)">
+            <button class="action-btn purple"
+                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
+                onclick="finishOnboarding()">Finalizar</button>
+        </div>
+    </div>
+
+
+    <!-- APP CONTAINER -->
+    <div class="app-container">
+
+        <!-- VIEW: HOME (Restaurada Completa) -->
+        <div id="view-home" class="app-view active">
+            <header class="app-header">
+                <div class="greeting">
+                    <span class="greeting-time">Bem-vindo!</span>
+                    <span class="greeting-text">Você está indo muito bem! 💪</span>
+                </div>
+                <div class="header-actions">
+                    <div class="streak-badge"><span class="material-icons">local_fire_department</span><span>1</span>
+                    </div>
+                    <button class="icon-btn"><span class="material-icons">notifications</span></button>
+                    <button class="icon-btn"><span class="material-icons">settings</span></button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Timer Card (Restaurado) -->
+                <div class="timer-card">
+                    <div class="timer-header">
+                        <span class="material-icons">smoke_free</span>
+                        <span>Tempo sem fumar</span>
+                    </div>
+                    <div class="timer-display">
+                        <div class="time-unit"><span class="time-value" id="days">00</span><span
+                                class="time-label">Dias</span></div>
+                        <span class="time-separator">:</span>
+                        <div class="time-unit"><span class="time-value" id="hours">00</span><span
+                                class="time-label">Horas</span></div>
+                        <span class="time-separator">:</span>
+                        <div class="time-unit small"><span class="time-value" id="minutes">00</span><span
+                                class="time-label">Min</span></div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-info"><span>Próximo marco: 24h</span><span>10%</span></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="current-benefit">
+                        <div class="benefit-icon"><span class="material-icons">favorite</span></div>
+                        <span>Sua pressão arterial está normalizando!</span>
+                    </div>
+                </div>
+
+                <!-- Stats (Restaurado + Personalizado) -->
+                <section class="stats-section">
+                    <h2>Suas conquistas</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon green"><span class="material-icons">smoke_free</span></div><span
+                                    class="stat-trend">Diário</span>
+                            </div>
+                            <div class="stat-value" id="avoidedCigs">0</div>
+                            <div class="stat-label">Cigarros evitados</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon yellow"><span class="material-icons">savings</span></div><span
+                                    class="stat-trend">R$</span>
+                            </div>
+                            <div class="stat-value" id="moneySaved">R$ 0</div>
+                            <div class="stat-label">Economizados</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon red"><span class="material-icons">favorite</span></div>
+                            </div>
+                            <div class="stat-value" id="lifeSaved">0h</div>
+                            <div class="stat-label">Vida recuperada</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon teal"><span class="material-icons">health_and_safety</span></div>
+                            </div>
+                            <div class="stat-value">5%</div>
+                            <div class="stat-label">Saúde</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions (Restaurado) -->
+                <section class="quick-actions">
+                    <h2>Ações Rápidas</h2>
+                    <div class="actions-grid">
+                        <button class="action-btn purple" onclick="showExerciseModal()">
+                            <span class="material-icons">self_improvement</span><span>Exercício</span>
+                        </button>
+                        <button class="action-btn blue" onclick="showJournalModal()">
+                            <span class="material-icons">edit_note</span><span>Diário</span>
+                        </button>
+                        <button class="action-btn orange">
+                            <span class="material-icons">emoji_events</span><span>Conquistas</span>
+                        </button>
+                        <button class="action-btn green"
+                            onclick="switchView('community', document.querySelectorAll('.nav-item')[3])">
+                            <span class="material-icons">people</span><span>Chat</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Health Milestones (Restaurado) -->
+                <section class="milestones-section">
+                    <div class="section-header">
+                        <h2>Benefícios de Saúde</h2><button class="text-btn">Ver todos</button>
+                    </div>
+                    <div class="milestones-carousel">
+                        <div class="milestone-card achieved">
+                            <div class="milestone-header">
+                                <div class="milestone-icon"><span class="material-icons">favorite</span></div><span
+                                    class="achieved-badge"><span class="material-icons">check</span></span>
+                            </div>
+                            <h3>20 Min</h3>
+                            <p>Pressão arterial volta ao normal</p>
+                        </div>
+                        <div class="milestone-card next">
+                            <div class="milestone-header">
+                                <div class="milestone-icon"><span class="material-icons">directions_run</span></div>
+                                <span class="next-badge">PRÓXIMO</span>
+                            </div>
+                            <h3>8 Horas</h3>
+                            <p>Níveis de oxigênio normalizam</p>
+                            <div class="milestone-progress">
+                                <div class="milestone-progress-fill" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Daily Mission (Restaurado) -->
+                <section class="mission-section" style="margin-bottom: 80px;">
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <div class="mission-icon"><span class="material-icons">flag</span></div>
+                            <div class="mission-info">
+                                <h3>Missão do Dia</h3><span class="xp-text">+50 XP</span>
+                            </div>
+                        </div>
+                        <div class="mission-list" id="missionList">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+
+        <!-- VIEW: COMMUNITY (Chat) -->
+        <div id="view-community" class="app-view">
+            <header class="app-header" style="border-bottom: 1px solid #eee;">
+                <div class="greeting">
+                    <span class="greeting-text">Chat Global 🌍</span>
+                    <span class="greeting-time">124 online agora</span>
+                </div>
+            </header>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatArea"></div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="messageInput" placeholder="Digite sua mensagem...">
+                    <button class="send-btn" onclick="sendMessage()"><span class="material-icons">send</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: PROFILE -->
+        <div id="view-profile" class="app-view">
+            <header class="app-header">
+                <div class="greeting">
+                    <span class="greeting-text">Meu Perfil 👤</span>
+                    <span class="greeting-time">Configurações e Estatísticas</span>
+                </div>
+            </header>
+            <main class="main-content" style="padding-bottom: 100px;">
+                <!-- Profile Header -->
+                <div class="profile-header-card">
+                    <div class="profile-avatar">
+                        <span class="material-icons"
+                            style="font-size: 48px; color: var(--primary);">account_circle</span>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profileName">Usuário</h2>
+                        <div class="profile-level">
+                            <span class="material-icons" style="font-size: 16px; color: #F59E0B;">star</span>
+                            <span>Nível 1 • 0 XP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Summary -->
+                <section class="profile-section">
+                    <h3>📊 Resumo Geral</h3>
+                    <div class="profile-stats-grid">
+                        <div class="profile-stat-item">
+                            <span class="material-icons" style="color: var(--success);">smoke_free</span>
+                            <div>
+                                <strong id="profileCigsAvoided">0</strong>
+                                <span>Cigarros evitados</span>
+                            </div>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="material-icons" style="color: #F59E0B;">savings</span>
+                            <div>
+                                <strong id="profileMoneySaved">R$ 0</strong>
+                                <span>Economizados</span>
+                            </div>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="material-icons" style="color: #EF4444;">favorite</span>
+                            <div>
+                                <strong id="profileLifeSaved">0h</strong>
+                                <span>Vida recuperada</span>
+                            </div>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="material-icons" style="color: var(--primary);">local_fire_department</span>
+                            <div>
+                                <strong id="profileStreak">0 dias</strong>
+                                <span>Sem fumar</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Current Settings -->
+                <section class="profile-section">
+                    <h3>⚙️ Minhas Configurações</h3>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <span class="material-icons">smoking_rooms</span>
+                            <div class="setting-info">
+                                <span>Cigarros por dia</span>
+                                <strong id="profileCigsPerDay">0</strong>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <span class="material-icons">attach_money</span>
+                            <div class="setting-info">
+                                <span>Preço do maço</span>
+                                <strong id="profilePackPrice">R$ 0</strong>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <span class="material-icons">event</span>
+                            <div class="setting-info">
+                                <span>Data de parada</span>
+                                <strong id="profileQuitDate">--</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Actions -->
+                <section class="profile-section">
+                    <h3>🔧 Ações</h3>
+                    <div class="profile-actions">
+                        <button class="profile-action-btn" onclick="alert('Compartilhamento em breve!')">
+                            <span class="material-icons">share</span>
+                            <span>Compartilhar Progresso</span>
+                        </button>
+                        <button class="profile-action-btn danger" onclick="resetProgress()">
+                            <span class="material-icons">restart_alt</span>
+                            <span>Reiniciar Progresso</span>
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Emergency FAB (Restaurado) -->
+        <button class="emergency-fab" onclick="showEmergencyModal()" id="emergencyBtn">
+            <span class="material-icons">warning</span>
+            <span>Crise de Vontade</span>
+        </button>
+
+        <!-- Bottom Navigation (Restaurado) -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchView('home', this)"><span
+                    class="material-icons">home</span><span>Início</span></button>
+            <button class="nav-item" onclick="showJournalModal()"><span
+                    class="material-icons">book</span><span>Diário</span></button>
+            <button class="nav-item" onclick="showExerciseModal()"><span
+                    class="material-icons">self_improvement</span><span>Terapia</span></button>
+            <button class="nav-item" onclick="switchView('community', this)"><span
+                    class="material-icons">people</span><span>Comunidade</span></button>
+            <button class="nav-item" onclick="switchView('profile', this)"><span
+                    class="material-icons">person</span><span>Perfil</span></button>
+        </nav>
+    </div>
+
+
+    <!-- MODAIS (Restaurados) -->
+    <!-- Emergency Modal -->
+    <div id="emergencyModal" class="modal">
+        <div class="modal-content emergency-modal">
+            <button class="modal-close" onclick="closeModals()"><span class="material-icons">close</span></button>
+            <div class="modal-header">
+                <span class="material-icons heart-icon">favorite</span>
+                <h2>Está com muita vontade?</h2>
+                <p>A vontade é passageira. Escolha uma ação:</p>
+            </div>
+            <div class="emergency-options">
+                <button class="emergency-option blue" onclick="showBreathingExercise()">
+                    <div class="option-icon"><span class="material-icons">self_improvement</span></div>
+                    <div class="option-content">
+                        <h4>Exercício de Respiração</h4>
+                    </div>
+                </button>
+                <button class="emergency-option green">
+                    <div class="option-icon"><span class="material-icons">psychology</span></div>
+                    <div class="option-content">
+                        <h4>Reestruturação Cognitiva</h4>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breathing Modal -->
+    <div id="breathingModal" class="modal">
+        <div class="modal-content breathing-modal">
+            <button class="modal-close" onclick="closeModals()"><span class="material-icons">close</span></button>
+            <h2>Técnica 4-7-8</h2>
+            <div class="breathing-circle" id="breathingCircle"><span id="breathInstruction">Iniciar</span></div>
+            <button class="start-btn" id="startBtn" onclick="startBreathingExercise()">Iniciar</button>
+        </div>
+    </div>
+
+    <!-- Journal Modal -->
+    <div id="journalModal" class="modal">
+        <div class="modal-content journal-modal">
+            <div class="modal-header-bar">
+                <button class="modal-close" onclick="closeModals()"><span class="material-icons">close</span></button>
+                <h2>Como você está?</h2>
+                <button class="save-btn" onclick="closeModals()">Salvar</button>
+            </div>
+            <div class="journal-content">
+                <div class="mood-section">
+                    <h3>Humor</h3>
+                    <div class="mood-selector">
+                        <button class="mood-btn active">😐</button><button class="mood-btn">🙂</button><button
+                            class="mood-btn">😢</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Modal -->
+    <div id="exerciseModal" class="modal">
+        <div class="modal-content exercise-modal">
+            <button class="modal-close" onclick="closeModals()"><span class="material-icons">close</span></button>
+            <h2>Terapia</h2>
+            <div class="exercise-list">
+                <div class="exercise-card" onclick="showBreathingExercise()">
+                    <div class="exercise-icon cyan"><span class="material-icons">air</span></div>
+                    <div class="exercise-info">
+                        <h4>Técnica 4-7-8</h4>
+                        <p>Acalmar agora</p>
+                    </div>
+                </div>
+                <!-- Player Card (Novo) -->
+                <!-- Player Card (Novo) -->
+                <div class="exercise-card" onclick="toggleMusic()" id="musicCard">
+                    <div class="exercise-icon purple"><span class="material-icons">music_note</span></div>
+                    <div class="exercise-info">
+                        <h4>Sons Relaxantes</h4>
+                        <p id="musicStatus">Chuva e Natureza</p>
+                    </div>
+                    <span class="material-icons" id="musicIcon">play_circle</span>
+                    <!-- Som de chuva relaxante (CC0) -->
+                    <audio id="relaxAudio" loop>
+                        <source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3"
+                            type="audio/mp3">
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

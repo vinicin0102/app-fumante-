@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+.pub-cache/
+.pub/
+build/
+.dart_tool/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.settings/
+.classpath
+
+# Flutter/Dart
+*.log
+*.lock
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+android/.gradle/
+android/local.properties
+android/*.iml
+android/app/debug
+android/app/profile
+android/app/release
+*.apk
+*.aab
+
+# iOS
+ios/.symlinks/
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+*.ipa
+
+# Web
+web/.dart_tool/
+
+# macOS
+macos/.symlinks/
+macos/Flutter/ephemeral/
+
+# Windows
+windows/flutter/ephemeral/
+
+# Linux
+linux/flutter/ephemeral/
+
+# Coverage
+coverage/
+
+# Symbols
+app.*.symbols
+
+# Exceptions
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Firebase
+firebase-debug.log
+.firebase/
+
+# Generated
+*.g.dart
+*.freezed.dart
+*.gr.dart
+
+# Misc
+.DS_Store
+*.swp
+*.swo
+Thumbs.db

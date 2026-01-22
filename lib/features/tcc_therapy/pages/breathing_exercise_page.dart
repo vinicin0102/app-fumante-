@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../domain/entities/tcc_exercise.dart';
 
 /// Página de exercício de respiração guiado
 class BreathingExercisePage extends StatefulWidget {
@@ -19,15 +20,27 @@ class _BreathingExercisePageState extends State<BreathingExercisePage> with Tick
   late Animation<double> _breathAnimation;
   Timer? _timer;
   int _currentCycle = 1;
-  final int _totalCycles = 4;
-  String _instruction = 'Inspire';
+  late BreathingExercise _exercise;
+  String _instruction = 'Prepare-se';
   bool _isRunning = false;
-  int _inhale = 4, _hold = 7, _exhale = 8;
 
   @override
   void initState() {
     super.initState();
-    _breathController = AnimationController(vsync: this, duration: Duration(seconds: _inhale + _hold + _exhale));
+    // Encontrar o exercício correto
+    _exercise = ExercisesList.breathingExercises.firstWhere(
+      (e) => e.id == widget.exerciseId,
+      orElse: () => ExercisesList.breathingExercises.first,
+    );
+
+    // Duração inicial baseada no exercício (soma total do ciclo)
+    final totalCycleDuration = _exercise.inhaleSeconds + _exercise.holdSeconds + _exercise.exhaleSeconds;
+    
+    _breathController = AnimationController(
+      vsync: this, 
+      duration: Duration(seconds: totalCycleDuration)
+    );
+    
     _breathAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(CurvedAnimation(parent: _breathController, curve: Curves.easeInOut));
   }
 
@@ -39,70 +52,141 @@ class _BreathingExercisePageState extends State<BreathingExercisePage> with Tick
   }
 
   void _startExercise() {
-    setState(() => _isRunning = true);
+    setState(() {
+      _isRunning = true;
+      _instruction = 'Inspire'; // Ajuste inicial
+    });
     _runCycle();
   }
 
   void _runCycle() {
-    if (_currentCycle > _totalCycles) {
+    if (_currentCycle > _exercise.cycles) {
       _completeExercise();
       return;
     }
     // Inspire
     setState(() => _instruction = 'Inspire...');
-    _breathController.forward(from: 0);
-    _timer = Timer(Duration(seconds: _inhale), () {
+    // Animação de expansão durante inspiração
+    _breathController.animateTo(1.0, duration: Duration(seconds: _exercise.inhaleSeconds));
+    
+    _timer = Timer(Duration(seconds: _exercise.inhaleSeconds), () {
       // Segure
       setState(() => _instruction = 'Segure...');
-      _timer = Timer(Duration(seconds: _hold), () {
+      
+      _timer = Timer(Duration(seconds: _exercise.holdSeconds), () {
         // Expire
         setState(() => _instruction = 'Expire...');
-        _breathController.reverse();
-        _timer = Timer(Duration(seconds: _exhale), () {
-          setState(() => _currentCycle++);
-          _runCycle();
+        // Animação de contração durante expiração
+        _breathController.animateTo(0.5, duration: Duration(seconds: _exercise.exhaleSeconds));
+        
+        _timer = Timer(Duration(seconds: _exercise.exhaleSeconds), () {
+          if (mounted) {
+             setState(() => _currentCycle++);
+             _runCycle();
+          }
         });
       });
     });
   }
 
   void _completeExercise() {
-    setState(() {
-      _isRunning = false;
-      _instruction = 'Completo! 🎉';
-    });
+    if (mounted) {
+      setState(() {
+        _isRunning = false;
+        _instruction = 'Completo! 🎉';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary.withOpacity(0.1),
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, leading: IconButton(icon: const Icon(Icons.close), onPressed: () => context.pop())),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(_exercise.title),
+        centerTitle: true,
+        backgroundColor: Colors.transparent, 
+        elevation: 0, 
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: AppColors.textPrimary), 
+          onPressed: () => context.pop()
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Técnica 4-7-8', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Text('Ciclo $_currentCycle de $_totalCycles', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondaryLight)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              _instruction, 
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary
+              )
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Ciclo $_currentCycle de ${_exercise.cycles}', 
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: AppColors.textSecondaryLight
+            )
+          ),
           const SizedBox(height: 60),
           Center(
             child: AnimatedBuilder(
-              animation: _breathAnimation,
+              animation: _breathController, // Usar o controller para reconstruir se necessário, mas a animação é melhor
               builder: (context, child) {
+                // A animação já está sendo controlada manualmente no _runCycle, 
+                // mas para suavidade visual podemos usar o valor do controller se estivermos usando .forward().
+                // Porem, aqui estamos usando .animateTo().
+                // O AnimatedBuilder precisa ouvir algo.
                 return Container(
-                  width: 200 * _breathAnimation.value,
-                  height: 200 * _breathAnimation.value,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.primary.withOpacity(0.3), border: Border.all(color: AppColors.primary, width: 4)),
-                  child: Center(child: Text(_instruction, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.primary))),
+                  width: 300 * (_breathController.value < 0.5 ? 0.5 : _breathController.value), // Garante min 0.5
+                  height: 300 * (_breathController.value < 0.5 ? 0.5 : _breathController.value),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, 
+                    color: AppColors.primary.withOpacity(0.3), 
+                    border: Border.all(color: AppColors.primary, width: 4)
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.air, 
+                      size: 100 * (_breathController.value < 0.5 ? 0.5 : _breathController.value), 
+                      color: AppColors.primary
+                    )
+                  ),
                 );
               },
             ),
           ),
           const SizedBox(height: 60),
           if (!_isRunning && _instruction != 'Completo! 🎉')
-            ElevatedButton(onPressed: _startExercise, child: const Text('Iniciar'))
+            ElevatedButton(
+              onPressed: _startExercise, 
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
+              child: const Text('Iniciar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+            )
           else if (_instruction == 'Completo! 🎉')
-            ElevatedButton(onPressed: () => context.pop(), child: const Text('Concluir')),
+            ElevatedButton(
+              onPressed: () => context.pop(), 
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
+              child: const Text('Concluir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+            ),
         ],
       ),
     );

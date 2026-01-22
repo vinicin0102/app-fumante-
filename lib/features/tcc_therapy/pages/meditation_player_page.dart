@@ -19,21 +19,22 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
 
-  // Mapa de exercícios com URLs de exemplo (sons relaxantes públicos)
+  // Mapa de exercícios com URLs de exemplo (usando MP3 para maior compatibilidade)
   final Map<String, Map<String, String>> _exercises = {
     'rain_ambience': {
       'title': 'Chuva Suave',
-      'url': 'https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg',
-      'image': 'assets/images/rain.jpg', // Placeholder
+      // Exemplo MP3 confiável para teste
+      'url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3',
+      'image': 'assets/images/rain.jpg', 
     },
     'forest_sounds': {
       'title': 'Floresta Calma',
-      'url': 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg',
+      'url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3',
       'image': 'assets/images/forest.jpg',
     },
     'guided_relax': {
       'title': 'Relaxamento Guiado',
-      'url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Exemplo provisório
+      'url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3', 
       'image': 'assets/images/meditate.jpg',
     },
   };
@@ -77,6 +78,14 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
     try {
       await _audioPlayer.setSourceUrl(exercise['url']!);
     } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao carregar áudio: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       print("Erro ao carregar áudio: $e");
     }
   }

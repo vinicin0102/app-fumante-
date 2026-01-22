@@ -9,15 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
 
     <!-- PWA Setup -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#2DD4BF">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Livre.io">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="./icon.png">
+
 
     <style>
         /* Install Prompt */
@@ -208,62 +208,309 @@
 
 <body>
 
-    <!-- ONBOARDING WIZARD (Novidade) -->
+    <!-- ONBOARDING WIZARD (Redesenhado - Premium) -->
     <div id="onboardingWizard" class="onboarding-screen">
+        <!-- Progress Bar -->
         <div style="margin-bottom: 20px;">
-            <div style="height: 4px; background: #eee; border-radius: 2px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span id="stepLabel" style="font-size: 12px; color: #94A3B8;">Passo 1 de 6</span>
+                <span id="stepPercent" style="font-size: 12px; color: var(--primary); font-weight: 600;">17%</span>
+            </div>
+            <div style="height: 6px; background: #eee; border-radius: 4px;">
                 <div id="progressBar"
-                    style="height: 100%; background: var(--primary); width: 20%; transition: width 0.3s;"></div>
+                    style="height: 100%; background: var(--gradient-primary); width: 17%; transition: width 0.4s ease; border-radius: 4px;">
+                </div>
             </div>
         </div>
 
-        <!-- Step 1: Intro -->
+        <!-- Step 1: Welcome + Social Proof -->
         <div class="step-content active" data-step="1">
-            <div style="text-align: center;">
-                <span class="material-icons"
-                    style="font-size: 64px; color: var(--primary); margin-bottom: 24px;">psychology</span>
-                <h1 style="font-size: 24px; margin-bottom: 12px;">Olá! 👋</h1>
-                <p style="color: #64748B;">Vamos personalizar o app para você em 30 segundos.</p>
+            <div style="text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <div style="margin-bottom: 32px;">
+                    <span class="material-icons"
+                        style="font-size: 72px; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">smoke_free</span>
+                </div>
+                <h1 style="font-size: 28px; margin-bottom: 12px; line-height: 1.3;">Parar de fumar nunca foi tão <span
+                        style="color: var(--primary);">científico</span></h1>
+                <p style="color: #64748B; font-size: 16px; line-height: 1.6;">Baseado em Terapia
+                    Cognitivo-Comportamental, o método usado pelos melhores hospitais do mundo.</p>
+
+                <!-- Social Proof -->
+                <div style="margin-top: 32px; padding: 20px; background: #F8FAFC; border-radius: 16px;">
+                    <div style="display: flex; justify-content: center; gap: 4px; margin-bottom: 8px;">
+                        <span class="material-icons" style="color: #F59E0B; font-size: 20px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 20px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 20px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 20px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 20px;">star_half</span>
+                    </div>
+                    <p style="font-weight: 600; margin: 0;">4.8 de 5 estrelas</p>
+                    <p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">+532.000 pessoas já pararam</p>
+                </div>
+
+                <!-- Trust Badges -->
+                <div style="display: flex; justify-content: center; gap: 24px; margin-top: 24px;">
+                    <div style="text-align: center;">
+                        <span class="material-icons"
+                            style="color: var(--success); font-size: 28px;">verified_user</span>
+                        <p style="font-size: 10px; color: #64748B; margin: 4px 0 0 0;">Dados<br>Protegidos</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <span class="material-icons" style="color: var(--info); font-size: 28px;">science</span>
+                        <p style="font-size: 10px; color: #64748B; margin: 4px 0 0 0;">Base<br>Científica</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <span class="material-icons"
+                            style="color: var(--secondary); font-size: 28px;">support_agent</span>
+                        <p style="font-size: 10px; color: #64748B; margin: 4px 0 0 0;">Suporte<br>24h</p>
+                    </div>
+                </div>
             </div>
             <button class="action-btn purple"
-                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
-                onclick="nextStep(2)">Começar</button>
+                style="width: 100%; padding: 16px; color: white; background: var(--gradient-primary); font-size: 16px; font-weight: 600; border-radius: 14px;"
+                onclick="nextStep(2)">Começar Minha Jornada</button>
+            <p style="text-align: center; font-size: 12px; color: #94A3B8; margin-top: 12px;">🔒 100% gratuito para
+                começar</p>
         </div>
 
         <!-- Step 2: Consumo -->
         <div class="step-content" data-step="2">
-            <h2>Hábito</h2>
-            <div style="margin-top: 32px;">
-                <label>Cigarros por dia?</label>
-                <h3 id="cigDisplay" style="color: var(--primary); font-size: 24px;">15</h3>
-                <input type="range" min="1" max="100" value="15" style="width: 100%; margin-top: 12px;"
-                    oninput="updateOnboardingData('cigs', this.value)">
-            </div>
-            <div style="margin-top: 32px;">
-                <label>Anos fumando?</label>
-                <h3 id="yearsDisplay" style="color: var(--primary); font-size: 24px;">5</h3>
-                <input type="range" min="0" max="50" value="5" style="width: 100%; margin-top: 12px;"
-                    oninput="updateOnboardingData('years', this.value)">
+            <div style="flex: 1;">
+                <h2 style="font-size: 22px; margin-bottom: 8px;">Vamos conhecer seu hábito</h2>
+                <p style="color: #64748B; margin-bottom: 32px;">Isso nos ajuda a personalizar seu plano.</p>
+
+                <div style="background: #F8FAFC; padding: 24px; border-radius: 16px; margin-bottom: 24px;">
+                    <label style="font-size: 14px; color: #64748B;">Quantos cigarros você fuma por dia?</label>
+                    <h3 id="cigDisplay"
+                        style="color: var(--primary); font-size: 48px; margin: 16px 0; font-weight: 700;">15</h3>
+                    <input type="range" min="1" max="60" value="15" style="width: 100%; accent-color: var(--primary);"
+                        oninput="updateOnboardingData('cigs', this.value)">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 12px; color: #94A3B8; margin-top: 8px;">
+                        <span>1</span>
+                        <span>30</span>
+                        <span>60+</span>
+                    </div>
+                </div>
+
+                <div style="background: #F8FAFC; padding: 24px; border-radius: 16px;">
+                    <label style="font-size: 14px; color: #64748B;">Há quantos anos você fuma?</label>
+                    <h3 id="yearsDisplay"
+                        style="color: var(--secondary); font-size: 48px; margin: 16px 0; font-weight: 700;">5</h3>
+                    <input type="range" min="0" max="50" value="5" style="width: 100%; accent-color: var(--secondary);"
+                        oninput="updateOnboardingData('years', this.value)">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 12px; color: #94A3B8; margin-top: 8px;">
+                        <span>
+                            < 1 ano</span>
+                                <span>25 anos</span>
+                                <span>50+</span>
+                    </div>
+                </div>
             </div>
             <button class="action-btn purple"
-                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
-                onclick="nextStep(3)">Próximo</button>
+                style="width: 100%; padding: 16px; color: white; background: var(--gradient-primary); font-size: 16px; font-weight: 600; border-radius: 14px;"
+                onclick="nextStep(3)">Continuar</button>
         </div>
 
         <!-- Step 3: Financeiro -->
         <div class="step-content" data-step="3">
-            <h2>Financeiro</h2>
-            <p style="color: #64748B;">Preço do maço?</p>
-            <div style="text-align: center; margin: 40px 0;">
-                <h1 id="priceDisplay" style="font-size: 48px; color: var(--success);">R$ 10,00</h1>
-                <p style="font-size: 12px; color: #94A3B8; margin-top: 8px;">Gasto mensal est: <strong
-                        id="monthlySpendDisplay">R$ 450,00</strong></p>
+            <div style="flex: 1;">
+                <h2 style="font-size: 22px; margin-bottom: 8px;">Quanto custa seu maço?</h2>
+                <p style="color: #64748B; margin-bottom: 32px;">Veja quanto você pode economizar.</p>
+
+                <div
+                    style="background: linear-gradient(135deg, #059669 0%, #10B981 100%); padding: 32px; border-radius: 20px; color: white; text-align: center;">
+                    <p style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Preço do maço</p>
+                    <h1 id="priceDisplay" style="font-size: 56px; margin: 0; font-weight: 700;">R$ 10</h1>
+                </div>
+
+                <input type="range" min="5" max="40" step="1" value="10"
+                    style="width: 100%; margin-top: 24px; accent-color: var(--success);"
+                    oninput="updateOnboardingData('price', this.value)">
+
+                <!-- Impacto Financeiro -->
+                <div
+                    style="margin-top: 32px; padding: 20px; background: #FEF3C7; border-radius: 16px; border-left: 4px solid #F59E0B;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="material-icons" style="color: #F59E0B;">warning</span>
+                        <div>
+                            <p style="font-weight: 600; margin: 0; color: #92400E;">Você gasta aproximadamente:</p>
+                            <p style="font-size: 24px; font-weight: 700; color: #B45309; margin: 4px 0 0 0;"
+                                id="monthlySpendDisplay">R$ 225/mês</p>
+                            <p style="font-size: 12px; color: #92400E; margin: 4px 0 0 0;">= <span
+                                    id="yearlySpendDisplay">R$ 2.700</span> por ano</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <input type="range" min="3" max="50" step="0.5" value="10"
-                style="width: 100%; accent-color: var(--success);" oninput="updateOnboardingData('price', this.value)">
             <button class="action-btn purple"
-                style="width: 100%; margin-top: auto; color: white; background: var(--primary);"
-                onclick="finishOnboarding()">Finalizar</button>
+                style="width: 100%; padding: 16px; color: white; background: var(--gradient-primary); font-size: 16px; font-weight: 600; border-radius: 14px;"
+                onclick="nextStep(4)">Ver Meu Diagnóstico</button>
+        </div>
+
+        <!-- Step 4: Diagnóstico Personalizado (Novo) -->
+        <div class="step-content" data-step="4">
+            <div style="flex: 1; text-align: center;">
+                <div style="margin-bottom: 24px;">
+                    <span class="material-icons" style="font-size: 64px; color: var(--error);">analytics</span>
+                </div>
+                <h2 style="font-size: 22px; margin-bottom: 24px;">Seu Diagnóstico Personalizado</h2>
+
+                <!-- Stats Cards -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left;">
+                    <div style="background: #FEE2E2; padding: 16px; border-radius: 12px;">
+                        <p style="font-size: 12px; color: #991B1B; margin: 0;">Cigarros fumados</p>
+                        <p id="diagCigs" style="font-size: 24px; font-weight: 700; color: #DC2626; margin: 4px 0 0 0;">
+                            27.375</p>
+                        <p style="font-size: 10px; color: #991B1B; margin: 2px 0 0 0;">na sua vida</p>
+                    </div>
+                    <div style="background: #DBEAFE; padding: 16px; border-radius: 12px;">
+                        <p style="font-size: 12px; color: #1E40AF; margin: 0;">Tempo perdido</p>
+                        <p id="diagTime" style="font-size: 24px; font-weight: 700; color: #2563EB; margin: 4px 0 0 0;">
+                            ~208 dias</p>
+                        <p style="font-size: 10px; color: #1E40AF; margin: 2px 0 0 0;">de vida</p>
+                    </div>
+                    <div style="background: #FEF3C7; padding: 16px; border-radius: 12px;">
+                        <p style="font-size: 12px; color: #92400E; margin: 0;">Dinheiro gasto</p>
+                        <p id="diagMoney" style="font-size: 24px; font-weight: 700; color: #D97706; margin: 4px 0 0 0;">
+                            R$ 13.500</p>
+                        <p style="font-size: 10px; color: #92400E; margin: 2px 0 0 0;">aproximadamente</p>
+                    </div>
+                    <div style="background: #D1FAE5; padding: 16px; border-radius: 12px;">
+                        <p style="font-size: 12px; color: #065F46; margin: 0;">Taxa de sucesso</p>
+                        <p style="font-size: 24px; font-weight: 700; color: #059669; margin: 4px 0 0 0;">89%</p>
+                        <p style="font-size: 10px; color: #065F46; margin: 2px 0 0 0;">com nosso método</p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 24px; padding: 16px; background: #F0FDF4; border-radius: 12px; border: 1px solid #BBF7D0;">
+                    <p style="margin: 0; color: #166534;">✅ <strong>Boa notícia:</strong> Seu corpo pode se recuperar em
+                        até 1 ano se você parar agora.</p>
+                </div>
+            </div>
+            <button class="action-btn purple"
+                style="width: 100%; padding: 16px; color: white; background: var(--gradient-primary); font-size: 16px; font-weight: 600; border-radius: 14px;"
+                onclick="nextStep(5)">Ver Meu Plano Personalizado</button>
+        </div>
+
+        <!-- Step 5: Depoimentos (Novo) -->
+        <div class="step-content" data-step="5">
+            <div style="flex: 1;">
+                <h2 style="font-size: 22px; margin-bottom: 8px;">Histórias Reais de Sucesso</h2>
+                <p style="color: #64748B; margin-bottom: 24px;">Pessoas como você que conseguiram.</p>
+
+                <!-- Depoimento 1 -->
+                <div
+                    style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div
+                            style="width: 48px; height: 48px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">
+                            MR</div>
+                        <div>
+                            <p style="font-weight: 600; margin: 0;">Marcos R.</p>
+                            <p style="font-size: 12px; color: #94A3B8; margin: 0;">Fumou 20 anos • Livre há 8 meses</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 14px; color: #475569; margin: 0; line-height: 1.6;">"Tentei parar 6 vezes. Com
+                        o Livre.io foi diferente. Os exercícios de respiração me salvaram nas crises. Hoje corro 5km sem
+                        cansar."</p>
+                    <div style="display: flex; gap: 2px; margin-top: 12px;">
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                    </div>
+                </div>
+
+                <!-- Depoimento 2 -->
+                <div
+                    style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div
+                            style="width: 48px; height: 48px; background: linear-gradient(135deg, #8B5CF6, #6D28D9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">
+                            CS</div>
+                        <div>
+                            <p style="font-weight: 600; margin: 0;">Carla S.</p>
+                            <p style="font-size: 12px; color: #94A3B8; margin: 0;">Fumou 12 anos • Livre há 1 ano</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 14px; color: #475569; margin: 0; line-height: 1.6;">"Parei por causa da minha
+                        filha. Economizei R$4.000 e usei pra viajar com ela. Melhor decisão da minha vida."</p>
+                    <div style="display: flex; gap: 2px; margin-top: 12px;">
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                        <span class="material-icons" style="color: #F59E0B; font-size: 16px;">star</span>
+                    </div>
+                </div>
+
+                <!-- Indicador -->
+                <p style="text-align: center; font-size: 12px; color: #94A3B8;">+2.847 depoimentos verificados</p>
+            </div>
+            <button class="action-btn purple"
+                style="width: 100%; padding: 16px; color: white; background: var(--gradient-primary); font-size: 16px; font-weight: 600; border-radius: 14px;"
+                onclick="nextStep(6)">Quero Começar Agora</button>
+        </div>
+
+        <!-- Step 6: Oferta Final (Novo) -->
+        <div class="step-content" data-step="6">
+            <div style="flex: 1; text-align: center;">
+                <div
+                    style="background: linear-gradient(135deg, #F59E0B, #D97706); padding: 8px 16px; border-radius: 20px; display: inline-block; margin-bottom: 16px;">
+                    <p style="color: white; font-weight: 700; font-size: 12px; margin: 0;">🎁 OFERTA ESPECIAL DE
+                        LANÇAMENTO</p>
+                </div>
+
+                <h2 style="font-size: 24px; margin-bottom: 8px;">Comece sua jornada hoje</h2>
+                <p style="color: #64748B; margin-bottom: 24px;">Acesso completo por apenas:</p>
+
+                <div
+                    style="background: linear-gradient(180deg, #1E293B, #0F172A); padding: 32px; border-radius: 20px; color: white;">
+                    <p style="text-decoration: line-through; color: #94A3B8; margin: 0;">De R$ 49,90/mês</p>
+                    <h1 style="font-size: 48px; color: #2DD4BF; margin: 8px 0;">R$ 29,90</h1>
+                    <p style="font-size: 14px; color: #94A3B8; margin: 0;">/mês após período de teste</p>
+
+                    <div
+                        style="background: rgba(45, 212, 191, 0.2); padding: 12px; border-radius: 12px; margin-top: 20px;">
+                        <p style="font-weight: 700; color: #2DD4BF; margin: 0;">🎉 TESTE GRÁTIS POR 3 DIAS</p>
+                        <p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">Sem cobrança • Cancele quando
+                            quiser</p>
+                    </div>
+                </div>
+
+                <!-- Benefícios -->
+                <div style="text-align: left; margin-top: 24px;">
+                    <div
+                        style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E2E8F0;">
+                        <span class="material-icons" style="color: var(--success);">check_circle</span>
+                        <span>Exercícios ilimitados de TCC</span>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E2E8F0;">
+                        <span class="material-icons" style="color: var(--success);">check_circle</span>
+                        <span>Plano personalizado anti-recaída</span>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E2E8F0;">
+                        <span class="material-icons" style="color: var(--success);">check_circle</span>
+                        <span>Comunidade de apoio 24h</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0;">
+                        <span class="material-icons" style="color: var(--success);">check_circle</span>
+                        <span>Áudios de meditação exclusivos</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="action-btn purple"
+                style="width: 100%; padding: 18px; color: white; background: linear-gradient(135deg, #F59E0B, #D97706); font-size: 18px; font-weight: 700; border-radius: 14px; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);"
+                onclick="finishOnboarding()">COMEÇAR MEU TESTE GRÁTIS</button>
+            <p style="text-align: center; font-size: 11px; color: #94A3B8; margin-top: 12px;">🔒 Pagamento seguro •
+                Garantia de 7 dias • Cancele a qualquer momento</p>
         </div>
     </div>
 
@@ -352,8 +599,143 @@
                     </div>
                 </section>
 
+                </section>
+
+                <!-- ⭐ PROGRAMA EXCLUSIVO DE 3 DIAS (Diferencial Premium) -->
+                <section class="program-section" style="margin-top: 24px;">
+                    <div
+                        style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); padding: 24px; border-radius: 24px; color: white; position: relative; overflow: hidden;">
+                        <!-- Decoração -->
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(245, 158, 11, 0.1); border-radius: 50%;">
+                        </div>
+                        <div
+                            style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(45, 212, 191, 0.1); border-radius: 50%;">
+                        </div>
+
+                        <!-- Badge -->
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                            <span
+                                style="background: linear-gradient(135deg, #F59E0B, #D97706); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;">🔥
+                                MÉTODO EXCLUSIVO</span>
+                            <span
+                                style="background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; font-size: 11px;">PREMIUM</span>
+                        </div>
+
+                        <h2 style="font-size: 24px; margin-bottom: 8px; line-height: 1.3;">Pare de Fumar em <span
+                                style="color: #2DD4BF;">3 Dias</span></h2>
+                        <p style="color: #94A3B8; font-size: 14px; margin-bottom: 20px;">Programa intensivo baseado em
+                            neurociência e TCC com taxa de sucesso de 89%</p>
+
+                        <!-- Dias do programa -->
+                        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                            <div
+                                style="flex: 1; background: rgba(45, 212, 191, 0.2); padding: 16px; border-radius: 16px; text-align: center; border: 2px solid rgba(45, 212, 191, 0.3);">
+                                <span style="font-size: 24px; display: block; margin-bottom: 4px;">🧠</span>
+                                <span style="font-size: 12px; font-weight: 600;">Dia 1</span>
+                                <p style="font-size: 10px; color: #94A3B8; margin: 4px 0 0 0;">Reprogramação Mental</p>
+                            </div>
+                            <div
+                                style="flex: 1; background: rgba(139, 92, 246, 0.2); padding: 16px; border-radius: 16px; text-align: center; border: 2px solid rgba(139, 92, 246, 0.3);">
+                                <span style="font-size: 24px; display: block; margin-bottom: 4px;">💪</span>
+                                <span style="font-size: 12px; font-weight: 600;">Dia 2</span>
+                                <p style="font-size: 10px; color: #94A3B8; margin: 4px 0 0 0;">Quebra de Gatilhos</p>
+                            </div>
+                            <div
+                                style="flex: 1; background: rgba(34, 197, 94, 0.2); padding: 16px; border-radius: 16px; text-align: center; border: 2px solid rgba(34, 197, 94, 0.3);">
+                                <span style="font-size: 24px; display: block; margin-bottom: 4px;">🏆</span>
+                                <span style="font-size: 12px; font-weight: 600;">Dia 3</span>
+                                <p style="font-size: 10px; color: #94A3B8; margin: 4px 0 0 0;">Liberdade Total</p>
+                            </div>
+                        </div>
+
+                        <button onclick="show3DayProgram()"
+                            style="width: 100%; padding: 16px; background: linear-gradient(135deg, #2DD4BF, #0D9488); color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer;">
+                            Começar Programa de 3 Dias
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 🔟 10 MÉTODOS INFALÍVEIS (Diferencial Premium) -->
+                <section class="methods-section" style="margin-top: 24px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2>10 Métodos Infalíveis</h2>
+                        <span
+                            style="background: linear-gradient(135deg, #F59E0B, #D97706); color: white; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700;">EXCLUSIVO</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Método 1 - Liberado -->
+                        <div onclick="showMethodDetail(1)"
+                            style="background: white; padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; gap: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #22C55E, #16A34A); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">
+                                1</div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Técnica do Copo d'Água</h4>
+                                <p style="margin: 0; font-size: 12px; color: #64748B;">Elimine a vontade em 30 segundos
+                                </p>
+                            </div>
+                            <span class="material-icons" style="color: #22C55E;">play_circle</span>
+                        </div>
+
+                        <!-- Método 2 - Liberado -->
+                        <div onclick="showMethodDetail(2)"
+                            style="background: white; padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; gap: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #22C55E, #16A34A); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">
+                                2</div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Respiração 4-7-8 Turbo</h4>
+                                <p style="margin: 0; font-size: 12px; color: #64748B;">Acalme o sistema nervoso</p>
+                            </div>
+                            <span class="material-icons" style="color: #22C55E;">play_circle</span>
+                        </div>
+
+                        <!-- Método 3 - Premium -->
+                        <div onclick="showPremiumOffer()"
+                            style="background: linear-gradient(to right, white, #FFFBEB); padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; gap: 16px; border: 1px solid #FDE68A;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #F59E0B, #D97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">
+                                3</div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Reprogramação de Gatilhos 🔒</h4>
+                                <p style="margin: 0; font-size: 12px; color: #64748B;">Quebre o ciclo automaticamente
+                                </p>
+                            </div>
+                            <span class="material-icons" style="color: #F59E0B;">lock</span>
+                        </div>
+
+                        <!-- Método 4-10 - Premium (resumido) -->
+                        <div onclick="showPremiumOffer()"
+                            style="background: linear-gradient(to right, white, #FFFBEB); padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; gap: 16px; border: 1px solid #FDE68A; position: relative;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #F59E0B, #D97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">
+                                4-10</div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">+7 Métodos Avançados 🔒</h4>
+                                <p style="margin: 0; font-size: 12px; color: #64748B;">Hipnose, Âncoras Mentais,
+                                    Substituição...</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <span class="material-icons" style="color: #F59E0B;">workspace_premium</span>
+                                <span style="font-size: 9px; color: #F59E0B; font-weight: 600;">PRO</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <button onclick="showPremiumOffer()"
+                        style="width: 100%; margin-top: 16px; padding: 14px; background: linear-gradient(135deg, #F59E0B, #D97706); color: white; border: none; border-radius: 14px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span class="material-icons" style="font-size: 20px;">lock_open</span>
+                        Desbloquear Todos os 10 Métodos
+                    </button>
+                </section>
+
                 <!-- Quick Actions (Restaurado) -->
-                <section class="quick-actions">
+                <section class="quick-actions" style="margin-top: 24px;">
                     <h2>Ações Rápidas</h2>
                     <div class="actions-grid">
                         <button class="action-btn purple" onclick="showExerciseModal()">
@@ -370,50 +752,146 @@
                             <span class="material-icons">people</span><span>Chat</span>
                         </button>
                     </div>
-                </section>
 
-                <!-- Health Milestones (Restaurado) -->
-                <section class="milestones-section">
-                    <div class="section-header">
-                        <h2>Benefícios de Saúde</h2><button class="text-btn">Ver todos</button>
-                    </div>
-                    <div class="milestones-carousel">
-                        <div class="milestone-card achieved">
-                            <div class="milestone-header">
-                                <div class="milestone-icon"><span class="material-icons">favorite</span></div><span
-                                    class="achieved-badge"><span class="material-icons">check</span></span>
-                            </div>
-                            <h3>20 Min</h3>
-                            <p>Pressão arterial volta ao normal</p>
+                    <!-- Health Milestones (Restaurado) -->
+                    <section class="milestones-section">
+                        <div class="section-header">
+                            <h2>Benefícios de Saúde</h2><button class="text-btn">Ver todos</button>
                         </div>
-                        <div class="milestone-card next">
-                            <div class="milestone-header">
-                                <div class="milestone-icon"><span class="material-icons">directions_run</span></div>
-                                <span class="next-badge">PRÓXIMO</span>
+                        <div class="milestones-carousel">
+                            <div class="milestone-card achieved">
+                                <div class="milestone-header">
+                                    <div class="milestone-icon"><span class="material-icons">favorite</span></div><span
+                                        class="achieved-badge"><span class="material-icons">check</span></span>
+                                </div>
+                                <h3>20 Min</h3>
+                                <p>Pressão arterial volta ao normal</p>
                             </div>
-                            <h3>8 Horas</h3>
-                            <p>Níveis de oxigênio normalizam</p>
-                            <div class="milestone-progress">
-                                <div class="milestone-progress-fill" style="width: 30%"></div>
+                            <div class="milestone-card next">
+                                <div class="milestone-header">
+                                    <div class="milestone-icon"><span class="material-icons">directions_run</span></div>
+                                    <span class="next-badge">PRÓXIMO</span>
+                                </div>
+                                <h3>8 Horas</h3>
+                                <p>Níveis de oxigênio normalizam</p>
+                                <div class="milestone-progress">
+                                    <div class="milestone-progress-fill" style="width: 30%"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <!-- Daily Mission (Restaurado) -->
-                <section class="mission-section" style="margin-bottom: 80px;">
-                    <div class="mission-card">
-                        <div class="mission-header">
-                            <div class="mission-icon"><span class="material-icons">flag</span></div>
-                            <div class="mission-info">
-                                <h3>Missão do Dia</h3><span class="xp-text">+50 XP</span>
+                    <!-- App Promo Cards (Novo) -->
+                    <section class="promo-section" style="margin-top: 24px;">
+                        <h2 style="margin-bottom: 16px;">Melhore sua experiência</h2>
+
+                        <!-- Install App Card -->
+                        <div id="installAppCard" class="promo-card" onclick="promptInstallApp()"
+                            style="display: none; background: linear-gradient(135deg, #2DD4BF 0%, #0D9488 100%); padding: 20px; border-radius: 20px; color: white; margin-bottom: 16px; cursor: pointer; position: relative; overflow: hidden;">
+                            <div
+                                style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 16px;">
+                                    <span class="material-icons" style="font-size: 32px;">install_mobile</span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 4px 0; font-size: 16px;">Instalar Livre.io</h3>
+                                    <p style="margin: 0; font-size: 13px; opacity: 0.9;">Acesse direto da tela inicial
+                                    </p>
+                                </div>
+                                <span class="material-icons">arrow_forward_ios</span>
+                            </div>
+                            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">📱
+                                    Acesso rápido</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">⚡
+                                    Funciona offline</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">🔔
+                                    Notificações</span>
                             </div>
                         </div>
-                        <div class="mission-list" id="missionList">
-                            <!-- Injetado via JS -->
+
+                        <!-- Notifications Card -->
+                        <div id="notificationsCard" class="promo-card" onclick="showNotificationPermissionModal()"
+                            style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); padding: 20px; border-radius: 20px; color: white; margin-bottom: 16px; cursor: pointer; position: relative; overflow: hidden;">
+                            <div
+                                style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 16px;">
+                                    <span class="material-icons" style="font-size: 32px;">notifications_active</span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 4px 0; font-size: 16px;" id="notifCardTitle">Ativar
+                                        Notificações
+                                    </h3>
+                                    <p style="margin: 0; font-size: 13px; opacity: 0.9;" id="notifCardDesc">Lembretes
+                                        motivacionais diários</p>
+                                </div>
+                                <span class="material-icons" id="notifCardIcon">arrow_forward_ios</span>
+                            </div>
+                            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">🌅
+                                    Manhã</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">🎯
+                                    Tarde</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">🌙
+                                    Noite</span>
+                            </div>
                         </div>
-                    </div>
-                </section>
+
+                        <!-- Premium Card -->
+                        <div class="promo-card" onclick="showPremiumOffer()"
+                            style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); padding: 20px; border-radius: 20px; color: white; cursor: pointer; position: relative; overflow: hidden;">
+                            <div
+                                style="position: absolute; top: 10px; right: 10px; background: white; color: #D97706; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;">
+                                3 DIAS GRÁTIS</div>
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 16px;">
+                                    <span class="material-icons" style="font-size: 32px;">workspace_premium</span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 4px 0; font-size: 16px;">Livre.io Premium</h3>
+                                    <p style="margin: 0; font-size: 13px; opacity: 0.9;">Acesso a especialistas 24h</p>
+                                </div>
+                                <span class="material-icons">arrow_forward_ios</span>
+                            </div>
+                            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">👨‍⚕️
+                                    Especialistas</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">🧘
+                                    Hipnose</span>
+                                <span
+                                    style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px;">📊
+                                    Relatórios</span>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- Daily Mission (Restaurado) -->
+                    <section class="mission-section" style="margin-bottom: 80px;">
+                        <div class="mission-card">
+                            <div class="mission-header">
+                                <div class="mission-icon"><span class="material-icons">flag</span></div>
+                                <div class="mission-info">
+                                    <h3>Missão do Dia</h3><span class="xp-text">+50 XP</span>
+                                </div>
+                            </div>
+                            <div class="mission-list" id="missionList">
+                                <!-- Injetado via JS -->
+                            </div>
+                        </div>
+                    </section>
             </main>
         </div>
 
@@ -578,7 +1056,7 @@
                         <h4>Exercício de Respiração</h4>
                     </div>
                 </button>
-                <button class="emergency-option green">
+                <button class="emergency-option green" onclick="showCognitiveExercise()">
                     <div class="option-icon"><span class="material-icons">psychology</span></div>
                     <div class="option-content">
                         <h4>Reestruturação Cognitiva</h4>
@@ -595,6 +1073,38 @@
             <h2>Técnica 4-7-8</h2>
             <div class="breathing-circle" id="breathingCircle"><span id="breathInstruction">Iniciar</span></div>
             <button class="start-btn" id="startBtn" onclick="startBreathingExercise()">Iniciar</button>
+        </div>
+    </div>
+
+    <!-- Cognitive Modal (Novo) -->
+    <div id="cognitiveModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeModals()"><span class="material-icons">close</span></button>
+            <div style="text-align: center; margin-bottom: 24px;">
+                <span class="material-icons" style="font-size: 48px; color: var(--primary);">psychology</span>
+                <h2>Reestruturação Cognitiva</h2>
+                <p style="color: #64748B;">Desafie seus pensamentos</p>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px 0; color: var(--primary);">1. Pare e Identifique</h4>
+                <p style="margin: 0; font-size: 14px;">"Estou tendo um pensamento de que *preciso* fumar agora."</p>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px 0; color: var(--primary);">2. Questione</h4>
+                <p style="margin: 0; font-size: 14px;">"Isso é uma necessidade real ou apenas um desconforto temporário?
+                    Já sobrevivi a isso antes."</p>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+                <h4 style="margin: 0 0 8px 0; color: var(--primary);">3. Reestruture</h4>
+                <p style="margin: 0; font-size: 14px;">"Eu não <i>preciso</i> fumar. Eu <i>escolho</i> ser saudável.
+                    Essa vontade vai passar em 5 minutos."</p>
+            </div>
+
+            <button class="action-btn purple" style="width: 100%; color: white; background: var(--primary);"
+                onclick="closeModals()">Entendi, vou tentar!</button>
         </div>
     </div>
 
@@ -640,14 +1150,63 @@
                         <p id="musicStatus">Chuva e Natureza</p>
                     </div>
                     <span class="material-icons" id="musicIcon">play_circle</span>
-                    <!-- Som de chuva relaxante (CC0) -->
+                    <!-- Som de chuva relaxante -->
                     <audio id="relaxAudio" loop>
-                        <source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3"
-                            type="audio/mp3">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mp3">
                     </audio>
+                </div>
+                <!-- Expert Card (Novo Trigger Premium) -->
+                <div class="exercise-card premium-card" onclick="showPremiumOffer()">
+                    <div class="premium-marker">PRO</div>
+                    <div class="exercise-icon orange"><span class="material-icons">support_agent</span></div>
+                    <div class="exercise-info">
+                        <h4>Falar com Especialista</h4>
+                        <p>Ajuda imediata 24h</p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- PREMIUM OFFER MODAL (Novo) -->
+    <div id="premiumModal" class="modal">
+        <div class="modal-content offer-modal">
+            <button class="modal-close" onclick="closeModals()"
+                style="background: rgba(255,255,255,0.1); color: white;"><span
+                    class="material-icons">close</span></button>
+            <span class="material-icons"
+                style="font-size: 48px; color: #F59E0B; margin-bottom: 8px;">workspace_premium</span>
+            <h2 style="color: white;">Desbloqueie o Poder Total</h2>
+            <p style="color: #94A3B8; font-size: 14px;">Aumente suas chances de parar em 300%</p>
+
+            <div class="offer-price">R$ 29,90 <span
+                    style="font-size: 14px; color: #94A3B8; font-weight: normal;">/mês</span></div>
+
+            <div class="offer-features">
+                <div class="offer-feature">
+                    <span class="material-icons">check_circle</span>
+                    <span>Acesso ilimitado a Especialistas 24h</span>
+                </div>
+                <div class="offer-feature">
+                    <span class="material-icons">check_circle</span>
+                    <span>Plano Personalizado anti-recaída</span>
+                </div>
+                <div class="offer-feature">
+                    <span class="material-icons">check_circle</span>
+                    <span>Áudios de Hipnose Avançada</span>
+                </div>
+                <div class="offer-feature">
+                    <span class="material-icons">check_circle</span>
+                    <span>Comunidade VIP de Mentoria</span>
+                </div>
+            </div>
+
+            <button class="premium-btn" onclick="subscribePremium()">QUERO PARAR DE VEZ</button>
+            <p style="font-size: 10px; color: #64748B; margin-top: 12px;">Cancelamento a qualquer momento. Garantia de 7
+                dias.</p>
+        </div>
+    </div>
+    </div>
     </div>
 
     <div id="installPrompt" class="install-prompt">

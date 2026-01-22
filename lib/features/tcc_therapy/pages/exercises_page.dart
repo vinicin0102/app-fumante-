@@ -93,28 +93,37 @@ class _ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
-      child: Row(
-        children: [
-          Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: exercise.type.color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)), child: Icon(exercise.type.icon, color: exercise.type.color)),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(exercise.title, style: const TextStyle(fontWeight: FontWeight.w600)),
-                const SizedBox(height: 4),
-                Text('${exercise.durationMinutes} min • ${exercise.difficulty.displayName}', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondaryLight)),
-              ],
+    return GestureDetector(
+      onTap: () {
+        if (exercise.type == ExerciseType.breathing) {
+          context.push(Routes.breathingExercise(exercise.id));
+        } else {
+          context.push(Routes.exerciseDetail(exercise.id));
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
+        child: Row(
+          children: [
+            Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: exercise.type.color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)), child: Icon(exercise.type.icon, color: exercise.type.color)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(exercise.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 4),
+                  Text('${exercise.durationMinutes} min • ${exercise.difficulty.displayName}', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondaryLight)),
+                ],
+              ),
             ),
-          ),
-          if (exercise.isPremium) Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: AppColors.warning.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Text('PRO', style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.bold))),
-          const SizedBox(width: 8),
-          const Icon(Icons.arrow_forward_ios, size: 16),
-        ],
+            if (exercise.isPremium) Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: AppColors.warning.withOpacity(0.1), borderRadius: BorderRadius.circular(8)), child: const Text('PRO', style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.bold))),
+            const SizedBox(width: 8),
+            const Icon(Icons.arrow_forward_ios, size: 16),
+          ],
+        ),
       ),
     );
   }

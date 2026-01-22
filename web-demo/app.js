@@ -493,6 +493,21 @@ function toggleMusic() {
 
 let swRegistration = null;
 
+// Configuração Push Notification - VAPID
+const VAPID_PUBLIC_KEY = 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U';
+
+// Converter key para array buffer
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 // Inicializar sistema de notificações
 async function initNotifications() {
     // Verificar suporte
@@ -505,6 +520,14 @@ async function initNotifications() {
     if (Notification.permission === 'granted') {
         console.log('Permissão de notificação já concedida');
         scheduleAllDailyNotifications();
+
+        // Tentar renovar/verificar inscrição push silenciosamente
+        try {
+            if (swRegistration) await subscribeUserToPush();
+        } catch (e) {
+            console.log('Erro ao checar inscrição push:', e);
+        }
+
         return true;
     }
 
@@ -517,6 +540,42 @@ async function initNotifications() {
     }
 
     return false;
+}
+
+// Inscrever usuário no Push Manager
+async function subscribeUserToPush() {
+    if (!swRegistration) return;
+
+    try {
+        const subscription = await swRegistration.pushManager.getSubscription();
+        if (subscription) {
+            console.log('Usuário já inscrito:', subscription);
+            updateSubscriptionUI(subscription);
+            return subscription;
+        }
+
+        const newSubscription = await swRegistration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+        });
+
+        console.log('Nova inscrição realizada:', newSubscription);
+        updateSubscriptionUI(newSubscription);
+
+        // Mostra JSON para teste (em produção enviaria para backend)
+        console.log(JSON.stringify(newSubscription));
+
+        return newSubscription;
+    } catch (err) {
+        console.error('Falha ao inscrever usuário:', err);
+    }
+}
+
+// Atualiza UI com dados da inscrição (para fins de debug/demo)
+function updateSubscriptionUI(sub) {
+    // Aqui você enviaria 'sub' para seu backend
+    // Por enquanto vamos salvar no localStorage para debug
+    localStorage.setItem('push_subscription', JSON.stringify(sub));
 }
 
 // Modal customizado para pedir permissão
@@ -572,6 +631,9 @@ async function requestNotificationPermission() {
 
         if (permission === 'granted') {
             console.log('Permissão concedida!');
+            // Inscrever no Push Manager
+            await subscribeUserToPush();
+
             // Mostrar notificação de boas-vindas
             showInstantNotification('🎉 Notificações ativadas!', 'Você receberá lembretes para te ajudar na jornada.');
             // Agendar notificações diárias

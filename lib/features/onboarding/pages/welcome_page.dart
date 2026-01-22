@@ -162,7 +162,7 @@ class _WelcomePageState extends State<WelcomePage>
         ),
         const SizedBox(height: 24),
         Text(
-          'QuitNow Pro',
+          'Livre.io',
           style: TextStyle(
             fontSize: 36,
             fontWeight: FontWeight.bold,

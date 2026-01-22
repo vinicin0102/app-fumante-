@@ -1,4 +1,4 @@
-# 🚭 QuitNow Pro
+# 🍃 Livre.io
 
 Aplicativo Flutter para ajudar pessoas a parar de fumar, com suporte a TCC (Terapia Cognitivo-Comportamental), gamificação e comunidade.
 

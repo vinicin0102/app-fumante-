@@ -41,7 +41,7 @@ class QuitNowApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
           return MaterialApp.router(
-            title: 'QuitNow Pro',
+            title: 'Livre.io',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,

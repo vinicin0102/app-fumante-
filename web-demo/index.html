@@ -3,12 +3,93 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🚭 QuitNow Pro</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🍃 Livre.io</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2DD4BF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Livre.io">
+    <link rel="apple-touch-icon" href="icon.png">
+
     <style>
+        /* Install Prompt */
+        .install-prompt {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .install-prompt.active {
+            display: flex;
+        }
+
+        .install-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .install-content {
+            flex: 1;
+        }
+
+        .install-content h4 {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+        }
+
+        .install-content p {
+            margin: 0;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .install-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .close-install {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #999;
+        }
+
         /* Onboarding Styles */
         .onboarding-screen {
             position: fixed;
@@ -569,7 +650,56 @@
         </div>
     </div>
 
+    <div id="installPrompt" class="install-prompt">
+        <button class="close-install" onclick="closeInstallPrompt()"><span class="material-icons"
+                style="font-size: 16px;">close</span></button>
+        <img src="icon.png" class="install-icon" alt="App Icon">
+        <div class="install-content">
+            <h4>Instalar Livre.io</h4>
+            <p>Adicione à tela inicial para acesso rápido</p>
+        </div>
+        <button class="install-btn" onclick="installPWA()">Instalar</button>
+    </div>
+
     <script src="app.js"></script>
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(reg => console.log('SW registered!', reg))
+                .catch(err => console.log('SW failed', err));
+        }
+
+        // Install Prompt Logic
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Mostra o prompt apenas se não estiver no modo standalone
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                setTimeout(() => {
+                    document.getElementById('installPrompt').classList.add('active');
+                }, 3000);
+            }
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    }
+                    deferredPrompt = null;
+                    closeInstallPrompt();
+                });
+            }
+        }
+
+        function closeInstallPrompt() {
+            document.getElementById('installPrompt').classList.remove('active');
+        }
+    </script>
 </body>
 
 </html>

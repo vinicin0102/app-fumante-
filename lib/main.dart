@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'core/services/notification_service.dart';
 
 import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
@@ -11,6 +14,14 @@ import 'presentation/cubits/theme/theme_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inicializar Firebase e Notificações
+  try {
+    await Firebase.initializeApp();
+    await NotificationService().init();
+  } catch (e) {
+    debugPrint("Erro na inicialização do Firebase: $e");
+  }
   
   // Inicializar dependências
   await configureDependencies();

@@ -135,9 +135,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quantos cigarros você fuma por dia?',
       subtitle: 'Isso nos ajuda a calcular sua economia e progresso',
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
+      child: Column(
             children: [
               const SizedBox(height: 40),
               Row(
@@ -185,8 +183,6 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                     ),
               ),
             ],
-          ),
-        ),
       ),
     );
   }
@@ -203,9 +199,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Há quanto tempo você fuma?',
       subtitle: 'Não se preocupe, nunca é tarde para parar!',
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
+      child: Column(
             children: [
               const SizedBox(height: 40),
               Slider(
@@ -250,9 +244,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
               ),
             ],
           ),
-        ),
       ),
-    );
   }
 
   // ==================== PERGUNTA 3: PREÇO DO MAÇO ====================
@@ -260,9 +252,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quanto custa o maço de cigarros?',
       subtitle: 'Vamos calcular quanto você vai economizar!',
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
+      child: Column(
         children: [
           const SizedBox(height: 40),
           Row(
@@ -304,7 +294,6 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
           _buildSavingsPreview(),
         ],
       ),
-        ),
       ),
     );
   }
@@ -443,9 +432,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quando você quer parar?',
       subtitle: 'Escolha uma data que seja realista para você',
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
+      child: Column(
         children: [
           const SizedBox(height: 24),
           _buildDateOption(
@@ -477,7 +464,6 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
           ),
         ],
       ),
-        ),
       ),
     );
   }
@@ -603,7 +589,11 @@ class _QuestionCard extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          child,
+          Expanded(
+            child: SingleChildScrollView(
+              child: child,
+            ),
+          ),
         ],
       ),
     );

@@ -135,54 +135,58 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quantos cigarros você fuma por dia?',
       subtitle: 'Isso nos ajuda a calcular sua economia e progresso',
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              _NumberButton(
-                icon: Icons.remove,
-                onPressed: () {
-                  if (_cigarettesPerDay > 1) {
-                    setState(() => _cigarettesPerDay--);
-                  }
-                },
-              ),
-              Container(
-                width: 120,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '$_cigarettesPerDay',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _NumberButton(
+                    icon: Icons.remove,
+                    onPressed: () {
+                      if (_cigarettesPerDay > 1) {
+                        setState(() => _cigarettesPerDay--);
+                      }
+                    },
                   ),
-                ),
+                  Container(
+                    width: 120,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '$_cigarettesPerDay',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                  _NumberButton(
+                    icon: Icons.add,
+                    onPressed: () {
+                      setState(() => _cigarettesPerDay++);
+                    },
+                  ),
+                ],
               ),
-              _NumberButton(
-                icon: Icons.add,
-                onPressed: () {
-                  setState(() => _cigarettesPerDay++);
-                },
+              const SizedBox(height: 24),
+              Text(
+                _getCigarettesLabel(_cigarettesPerDay),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondaryLight,
+                    ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          Text(
-            _getCigarettesLabel(_cigarettesPerDay),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textSecondaryLight,
-                ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -199,50 +203,54 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Há quanto tempo você fuma?',
       subtitle: 'Não se preocupe, nunca é tarde para parar!',
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          Slider(
-            value: _yearsSmoking.toDouble(),
-            min: 1,
-            max: 50,
-            divisions: 49,
-            activeColor: AppColors.primary,
-            inactiveColor: AppColors.primary.withOpacity(0.2),
-            onChanged: (value) {
-              setState(() => _yearsSmoking = value.round());
-            },
-          ),
-          const SizedBox(height: 16),
-          Text(
-            _yearsSmoking == 1 ? '1 ano' : '$_yearsSmoking anos',
-            style: const TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.infoBg,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.info_outline, color: AppColors.info),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Você fumou aproximadamente ${_cigarettesPerDay * _yearsSmoking * 365} cigarros na vida.',
-                    style: const TextStyle(color: AppColors.info),
-                  ),
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              Slider(
+                value: _yearsSmoking.toDouble(),
+                min: 1,
+                max: 50,
+                divisions: 49,
+                activeColor: AppColors.primary,
+                inactiveColor: AppColors.primary.withOpacity(0.2),
+                onChanged: (value) {
+                  setState(() => _yearsSmoking = value.round());
+                },
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _yearsSmoking == 1 ? '1 ano' : '$_yearsSmoking anos',
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.infoBg,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, color: AppColors.info),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Você fumou aproximadamente ${_cigarettesPerDay * _yearsSmoking * 365} cigarros na vida.',
+                        style: const TextStyle(color: AppColors.info),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -252,7 +260,9 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quanto custa o maço de cigarros?',
       subtitle: 'Vamos calcular quanto você vai economizar!',
-      child: Column(
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
         children: [
           const SizedBox(height: 40),
           Row(
@@ -293,6 +303,8 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
           const SizedBox(height: 32),
           _buildSavingsPreview(),
         ],
+      ),
+        ),
       ),
     );
   }
@@ -431,7 +443,9 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     return _QuestionCard(
       title: 'Quando você quer parar?',
       subtitle: 'Escolha uma data que seja realista para você',
-      child: Column(
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
         children: [
           const SizedBox(height: 24),
           _buildDateOption(
@@ -462,6 +476,8 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
             'Selecione uma data específica',
           ),
         ],
+      ),
+        ),
       ),
     );
   }
